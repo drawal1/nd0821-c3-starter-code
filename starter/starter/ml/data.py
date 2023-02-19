@@ -46,6 +46,10 @@ def process_data(
         passed in.
     """
 
+    # get rid of the fnlgt column. It is not predictive of salary classification
+    # and has a significant adverse impact on recall metric
+    X = X.drop(['fnlgt'], axis=1)
+
     if label is not None:
         y = X[label]
         X = X.drop([label], axis=1)

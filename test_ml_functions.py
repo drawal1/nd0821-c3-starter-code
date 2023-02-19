@@ -4,29 +4,21 @@
     pytest tests for churn_library.py
 """
 
+import pytest
+
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 from starter.starter.ml.data import process_data
 import starter.starter.ml.model as model
+import starter.starter.ml.slice as sl
 
-def data_sample_and_cat_features(purpose):
-    """ return data file path and list of cat features
-        purpose: Pass 0 for encoding, 1 for training and 2 for inference
-    """
+@pytest.fixture
+def data_and_cat_features():
+    """ return data file path and list of cat features """
     data_file_path = './starter/data/census.csv'
     data = pd.read_csv(data_file_path)
     assert data is not None
-
-    if purpose == 0:
-        sample_size = int(data.shape[0]*1.0)
-    elif purpose == 1:
-        sample_size = int(data.shape[0]*0.8)
-    elif purpose == 2:
-        sample_size = 5
-    else:
-        raise AttributeError("Invalid value passed for purpose")
-
-    data_sample = data.sample(sample_size)
 
     cat_features = [
         "workclass",
@@ -39,69 +31,66 @@ def data_sample_and_cat_features(purpose):
         "native-country",
     ]
 
-    return (data_sample, cat_features)
+    return (data, cat_features)
 
-def test_process_data_for_training():
+
+def test_process_data_for_encoder_lb(data_and_cat_features):
     '''
-    test the process data function
+    test the process data function for encoder and lb
     '''
-    # first get the encoder and lbl_bnrzr
-    data_sample, cat_features = data_sample_and_cat_features(0)
-    _, _, encoder, lbl_bnrzr = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=True
+    # get the encoder and lb
+    data = data_and_cat_features[0]
+    cat_features = data_and_cat_features[1]
+    _, _, encoder, lb = process_data(
+        data, categorical_features=cat_features, label="salary", training=True
     )
 
-    # get training data
-    data_sample, cat_features = data_sample_and_cat_features(1)
+    assert encoder is not None
+    assert type(encoder).__name__ == "OneHotEncoder"
+    assert lb is not None
+    assert type(lb).__name__ == "LabelBinarizer"
+
+def test_process_data_for_train(data_and_cat_features):
+    '''
+    test the process data function for training data
+    '''
+    # get the encoder and lb
+    data = data_and_cat_features[0]
+    cat_features = data_and_cat_features[1]
+    _, _, encoder, lb = process_data(
+        data, categorical_features=cat_features, label="salary", training=True
+    )
+
+    train, _ = train_test_split(data, test_size=0.20, stratify=data['salary'])
+
+    # Process the training data with the encoder and lb
     x_train, y_train, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
+        train, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
     )
 
     assert x_train is not None
     assert type(x_train).__name__ == "ndarray"
     assert y_train is not None
     assert type(y_train).__name__ == "ndarray"
-    assert encoder is not None
-    assert type(encoder).__name__ == "OneHotEncoder"
-    assert lbl_bnrzr is not None
-    assert type(lbl_bnrzr).__name__ == "LabelBinarizer"
 
-def test_process_data_for_inference():
-    '''
-    test the process data function
-    '''
-    # first get the encoder and lbl_bnrzr
-    data_sample, cat_features = data_sample_and_cat_features(0)
-    _, _, encoder, lbl_bnrzr = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=True
-    )
-
-    # get inference data sample
-    data_sample, _ = data_sample_and_cat_features(2)
-    x_inf, y_inf, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
-    )
-
-    assert x_inf.shape[0] == 5
-    assert y_inf.shape == (5,)
-
-def test_train_model():
+def test_train_model(data_and_cat_features):
     '''
     test the train_model function
     '''
-    # first get the encoder and lbl_bnrzr
-    data_sample, cat_features = data_sample_and_cat_features(0)
-    _, _, encoder, lbl_bnrzr = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=True
+    # get the encoder and lb
+    data = data_and_cat_features[0]
+    cat_features = data_and_cat_features[1]
+    _, _, encoder, lb = process_data(
+        data, categorical_features=cat_features, label="salary", training=True
     )
 
-    # get training data
-    data_sample, cat_features = data_sample_and_cat_features(1)
+    train, _ = train_test_split(data, test_size=0.20, stratify=data['salary'])
+
+    # Process the training data with the encoder and lb
     x_train, y_train, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
+        train, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
     )
 
     lrc_model = model.train_model(x_train, y_train)
@@ -109,60 +98,61 @@ def test_train_model():
     assert lrc_model is not None
     assert type(lrc_model).__name__ == 'LogisticRegression'
 
-def test_inference():
+def test_inference(data_and_cat_features):
     '''
     test the inference function
     '''
-    # first get the encoder and lbl_bnrzr
-    data_sample, cat_features = data_sample_and_cat_features(0)
-    _, _, encoder, lbl_bnrzr = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=True
+    # get the encoder and lb
+    data = data_and_cat_features[0]
+    cat_features = data_and_cat_features[1]
+    _, _, encoder, lb = process_data(
+        data, categorical_features=cat_features, label="salary", training=True
     )
 
-    # get training data
-    data_sample, cat_features = data_sample_and_cat_features(1)
+    train, test = train_test_split(data, test_size=0.20, stratify=data['salary'])
+
+    # Process the training data with the encoder and lb
     x_train, y_train, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
+        train, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
     )
 
     lrc_model = model.train_model(x_train, y_train)
 
-    data_sample, _ = data_sample_and_cat_features(2)
     x_inf, _, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
+        test, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
     )
 
     y_pred = model.inference(lrc_model, x_inf)
 
     assert y_pred is not None
     assert type(y_pred).__name__ == "ndarray"
-    assert y_pred.shape == (5,)
 
-def test_compute_model_metrics():
+def test_compute_model_metrics(data_and_cat_features):
     '''
     test the compute_model_metrics function
     '''
-    # first get the encoder and lbl_bnrzr
-    data_sample, cat_features = data_sample_and_cat_features(0)
-    _, _, encoder, lbl_bnrzr = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=True
+    # get the encoder and lb
+    data = data_and_cat_features[0]
+    cat_features = data_and_cat_features[1]
+    _, _, encoder, lb = process_data(
+        data, categorical_features=cat_features, label="salary", training=True
     )
 
-    # get training data
-    data_sample, cat_features = data_sample_and_cat_features(1)
+    train, test = train_test_split(data, test_size=0.20, stratify=data['salary'])
+
+    # Process the training data with the encoder and lb
     x_train, y_train, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
+        train, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
     )
 
     lrc_model = model.train_model(x_train, y_train)
 
-    data_sample, _ = data_sample_and_cat_features(2)
     x_inf, y_inf, _, _ = process_data(
-        data_sample, categorical_features=cat_features, label="salary", training=False,
-        encoder=encoder, lb=lbl_bnrzr
+        test, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
     )
 
     y_pred = model.inference(lrc_model, x_inf)
@@ -172,4 +162,34 @@ def test_compute_model_metrics():
     assert recall is not None
     assert fbeta is not None
 
-    print(f"precision: {precision}, recall: {recall}, fbeta: {fbeta}")
+    print(f"precision: {precision:6.2n}, recall: {recall:6.2n}, fbeta: {fbeta:6.2n}")
+
+def test_slice_performance(data_and_cat_features):
+    '''
+    test the compute_model_metrics function
+    '''
+    # get the encoder and lb
+    data = data_and_cat_features[0]
+    cat_features = data_and_cat_features[1]
+    _, _, encoder, lb = process_data(
+        data, categorical_features=cat_features, label="salary", training=True
+    )
+
+    train, _ = train_test_split(data, test_size=0.20, stratify=data['salary'])
+
+    # Process the training data with the encoder and lb
+    x_train, y_train, _, _ = process_data(
+        train, categorical_features=cat_features, label="salary", training=False,
+        encoder=encoder, lb=lb
+    )
+
+    lrc_model = model.train_model(x_train, y_train)
+
+    for slicing_cat in cat_features:
+        print(f"Slicing category: {slicing_cat}")
+        print("| Categorical Value | Precision | Recall | fbeta |")
+        print("| ----------------- | --------- | ------ | ----- |")
+        slice_perf_dict = sl.slice_performance(data, cat_features, lrc_model, encoder,
+                                                lb, slicing_cat)
+        for key, val in slice_perf_dict.items():
+            print(f"| {key:30s}| {val[0]:6.2n} | {val[1]:6.2n} | {val[2]:6.2n} |")
