@@ -1,0 +1,126 @@
+Slicing category: workclass
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| State-gov                     |   0.76 |   0.71 |   0.73 |
+| Self-emp-not-inc              |   0.68 |   0.53 |   0.59 |
+| Private                       |   0.75 |   0.57 |   0.64 |
+| Federal-gov                   |   0.72 |   0.74 |   0.73 |
+| Local-gov                     |    0.7 |   0.63 |   0.66 |
+| ?                             |   0.67 |   0.37 |   0.47 |
+| Self-emp-inc                  |   0.77 |   0.83 |    0.8 |
+| Without-pay                   |      1 |      1 |      1 |
+| Never-worked                  |      1 |      1 |      1 |
+Slicing category: education
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| Bachelors                     |   0.73 |   0.81 |   0.77 |
+| HS-grad                       |   0.68 |   0.27 |   0.39 |
+| 11th                          |    0.9 |   0.15 |   0.26 |
+| Masters                       |    0.8 |   0.88 |   0.83 |
+| 9th                           |   0.67 |  0.074 |   0.13 |
+| Some-college                  |   0.66 |   0.43 |   0.52 |
+| Assoc-acdm                    |   0.67 |   0.54 |    0.6 |
+| Assoc-voc                     |   0.69 |   0.47 |   0.56 |
+| 7th-8th                       |    0.4 |   0.05 |  0.089 |
+| Doctorate                     |   0.83 |   0.89 |   0.86 |
+| Prof-school                   |   0.85 |   0.92 |   0.88 |
+| 5th-6th                       |      1 |   0.12 |   0.22 |
+| 10th                          |   0.54 |   0.11 |   0.19 |
+| 1st-4th                       |      1 |   0.17 |   0.29 |
+| Preschool                     |      0 |      1 |      0 |
+| 12th                          |   0.82 |   0.27 |   0.41 |
+Slicing category: marital-status
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| Never-married                 |    0.8 |   0.27 |    0.4 |
+| Married-civ-spouse            |   0.73 |   0.65 |   0.69 |
+| Divorced                      |    0.8 |   0.32 |   0.46 |
+| Married-spouse-absent         |   0.64 |   0.41 |    0.5 |
+| Separated                     |   0.82 |   0.35 |   0.49 |
+| Married-AF-spouse             |      1 |    0.4 |   0.57 |
+| Widowed                       |   0.78 |   0.34 |   0.48 |
+Slicing category: occupation
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| Adm-clerical                  |   0.67 |   0.39 |   0.49 |
+| Exec-managerial               |   0.77 |   0.82 |   0.79 |
+| Handlers-cleaners             |   0.67 |   0.14 |   0.23 |
+| Prof-specialty                |   0.76 |   0.81 |   0.78 |
+| Other-service                 |    0.7 |    0.1 |   0.18 |
+| Sales                         |   0.71 |   0.59 |   0.64 |
+| Craft-repair                  |   0.66 |    0.3 |   0.41 |
+| Transport-moving              |   0.69 |   0.28 |   0.39 |
+| Farming-fishing               |   0.67 |   0.26 |   0.38 |
+| Machine-op-inspct             |   0.81 |   0.14 |   0.24 |
+| Tech-support                  |   0.69 |   0.67 |   0.68 |
+| ?                             |   0.67 |   0.37 |   0.47 |
+| Protective-serv               |   0.64 |   0.43 |   0.51 |
+| Armed-Forces                  |      1 |      1 |      1 |
+| Priv-house-serv               |   0.33 |      1 |    0.5 |
+Slicing category: relationship
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| Not-in-family                 |   0.77 |   0.32 |   0.46 |
+| Husband                       |   0.74 |   0.65 |   0.69 |
+| Wife                          |   0.71 |   0.66 |   0.68 |
+| Own-child                     |   0.71 |   0.15 |   0.25 |
+| Unmarried                     |   0.89 |   0.27 |   0.41 |
+| Other-relative                |   0.58 |    0.3 |   0.39 |
+Slicing category: race
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| White                         |   0.74 |    0.6 |   0.67 |
+| Black                         |   0.73 |   0.49 |   0.59 |
+| Asian-Pac-Islander            |   0.69 |   0.63 |   0.66 |
+| Amer-Indian-Eskimo            |   0.61 |   0.56 |   0.58 |
+| Other                         |   0.52 |   0.44 |   0.48 |
+Slicing category: sex
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| Male                          |   0.74 |   0.61 |   0.67 |
+| Female                        |   0.73 |   0.51 |    0.6 |
+Slicing category: native-country
+| Categorical Value | Precision | Recall | fbeta |
+| ----------------- | --------- | ------ | ----- |
+| United-States                 |   0.74 |    0.6 |   0.66 |
+| Cuba                          |   0.83 |    0.6 |    0.7 |
+| Jamaica                       |    0.4 |    0.2 |   0.27 |
+| India                         |   0.67 |    0.8 |   0.73 |
+| ?                             |   0.75 |   0.59 |   0.66 |
+| Mexico                        |   0.75 |   0.27 |    0.4 |
+| South                         |   0.48 |   0.62 |   0.54 |
+| Puerto-Rico                   |   0.75 |    0.5 |    0.6 |
+| Honduras                      |      1 |      1 |      1 |
+| England                       |   0.71 |   0.67 |   0.69 |
+| Canada                        |   0.71 |   0.56 |   0.63 |
+| Germany                       |    0.8 |   0.55 |   0.65 |
+| Iran                          |   0.74 |   0.78 |   0.76 |
+| Philippines                   |    0.8 |   0.59 |   0.68 |
+| Italy                         |   0.79 |   0.44 |   0.56 |
+| Poland                        |   0.57 |   0.33 |   0.42 |
+| Columbia                      |    0.5 |      1 |   0.67 |
+| Cambodia                      |      1 |   0.14 |   0.25 |
+| Thailand                      |   0.75 |      1 |   0.86 |
+| Ecuador                       |    0.5 |    0.5 |    0.5 |
+| Laos                          |    0.5 |    0.5 |    0.5 |
+| Taiwan                        |   0.81 |   0.85 |   0.83 |
+| Haiti                         |   0.67 |    0.5 |   0.57 |
+| Portugal                      |      1 |   0.25 |    0.4 |
+| Dominican-Republic            |   0.33 |    0.5 |    0.4 |
+| El-Salvador                   |    0.8 |   0.89 |   0.84 |
+| France                        |   0.78 |   0.58 |   0.67 |
+| Guatemala                     |      1 |   0.33 |    0.5 |
+| China                         |   0.63 |   0.85 |   0.72 |
+| Japan                         |   0.74 |   0.71 |   0.72 |
+| Yugoslavia                    |    0.6 |    0.5 |   0.55 |
+| Peru                          |      1 |    0.5 |   0.67 |
+| Outlying-US(Guam-USVI-etc)    |      1 |      1 |      1 |
+| Scotland                      |      1 |   0.67 |    0.8 |
+| Trinadad&Tobago               |      1 |    0.5 |   0.67 |
+| Greece                        |   0.55 |   0.75 |   0.63 |
+| Nicaragua                     |      0 |      0 |      0 |
+| Vietnam                       |   0.25 |    0.2 |   0.22 |
+| Hong                          |   0.83 |   0.83 |   0.83 |
+| Ireland                       |      1 |    0.6 |   0.75 |
+| Hungary                       |      1 |   0.33 |    0.5 |
+| Holand-Netherlands            |      1 |      1 |      1 |

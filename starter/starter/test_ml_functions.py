@@ -4,14 +4,30 @@
     pytest tests for churn_library.py
 """
 
+import sys
 import pytest
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from starter.starter.ml.data import process_data
-import starter.starter.ml.model as model
-import starter.starter.ml.slice as sl
+from .ml.data import process_data
+from .ml import model
+from .ml import slice as sl
+
+
+class Tee(object):
+    """ utility class to Tee console output to files """
+    def __init__(self, *files):
+        self.files = files
+    def write(self, obj):
+        """ write to files """
+        for f in self.files:
+            f.write(obj)
+            f.flush() # If you want the output to be visible immediately
+    def flush(self) :
+        """ flush content """
+        for f in self.files:
+            f.flush()
 
 
 @pytest.fixture
@@ -219,12 +235,19 @@ def test_slice_performance(data_and_cat_features):
 
     lrc_model = model.train_model(x_train, y_train)
 
-    for slicing_cat in cat_features:
-        print(f"Slicing category: {slicing_cat}")
-        print("| Categorical Value | Precision | Recall | fbeta |")
-        print("| ----------------- | --------- | ------ | ----- |")
-        slice_perf_dict = sl.slice_performance(
-            data, cat_features, lrc_model, encoder, lb, slicing_cat
-        )
-        for key, val in slice_perf_dict.items():
-            print(f"| {key:30s}| {val[0]:6.2n} | {val[1]:6.2n} | {val[2]:6.2n} |")
+    original_stdout = sys.stdout # Save a reference to the original standard output
+    with open('slice_output.txt', 'w', encoding="utf-8") as f:
+        sys.stdout = Tee(original_stdout, f)
+
+        for slicing_cat in cat_features:
+            print(f"Slicing category: {slicing_cat}")
+            print("| Categorical Value | Precision | Recall | fbeta |")
+            print("| ----------------- | --------- | ------ | ----- |")
+            slice_perf_dict = sl.slice_performance(
+                data, cat_features, lrc_model, encoder, lb, slicing_cat
+            )
+            for key, val in slice_perf_dict.items():
+                print(f"| {key:30s}| {val[0]:6.2n} | {val[1]:6.2n} | {val[2]:6.2n} |")
+
+        #use the original
+        sys.stdout = original_stdout

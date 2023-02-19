@@ -5,12 +5,9 @@ import joblib
 
 # Add the necessary imports for the starter code.
 from ml.data import process_data
-from ml.model import train_model
+from ml.model import train_model, save
 
 MODEL_FOLDER_PATH = "./starter/model"
-LR_MODEL_PTH = f"{MODEL_FOLDER_PATH}/model.pkl"
-LR_ENCODER_PTH = f"{MODEL_FOLDER_PATH}/encoder.pkl"
-LR_LBL_BNRZR_PTH = f"{MODEL_FOLDER_PATH}/lbl_binarizer.pkl"
 
 # Add code to load in the data.
 data = pd.read_csv("./starter/data/census.csv")
@@ -46,6 +43,4 @@ X_train, y_train, _, _ = process_data(
 # Train and save a model.
 model = train_model(X_train, y_train)
 
-joblib.dump(model, LR_MODEL_PTH)
-joblib.dump(encoder, LR_ENCODER_PTH)
-joblib.dump(lb, LR_LBL_BNRZR_PTH)
+save(model, encoder, lb, MODEL_FOLDER_PATH)

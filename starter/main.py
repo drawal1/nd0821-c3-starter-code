@@ -3,15 +3,11 @@ Orchestrator for creating, deleting and checking pipelines (topics, tables and d
 Author: Dhar Rawal
 """
 
-import joblib  # type: ignore
 import pandas as pd
 
 from fastapi import (  # type: ignore
     Body,
     FastAPI,
-    # HTTPException,
-    # Response,
-    # status,
 )
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
@@ -20,9 +16,6 @@ from starter.starter.ml.data import process_data
 from starter.starter.ml import model
 
 MODEL_FOLDER_PATH = "./starter/model"
-LR_MODEL_PTH = f"{MODEL_FOLDER_PATH}/model.pkl"
-LR_ENCODER_PTH = f"{MODEL_FOLDER_PATH}/encoder.pkl"
-LR_LBL_BNRZR_PTH = f"{MODEL_FOLDER_PATH}/lbl_binarizer.pkl"
 
 CAT_FEATURES = [
     "workclass",
@@ -73,9 +66,7 @@ def model_inference(  # pylint: disable=too-many-arguments
     """
 
     # get the model, encoder and lb
-    lrc_model = joblib.load(LR_MODEL_PTH)
-    encoder = joblib.load(LR_ENCODER_PTH)
-    lb = joblib.load(LR_LBL_BNRZR_PTH)
+    lrc_model, encoder, lb = model.load(MODEL_FOLDER_PATH)
 
     # create dataframe
     data = pd.DataFrame([feature_data.dict(by_alias=True)])

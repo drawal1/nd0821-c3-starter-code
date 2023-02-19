@@ -3,6 +3,7 @@ Author: Dhar Rawal
 Test code to test FastAPI
 """
 
+import requests
 from fastapi.testclient import TestClient
 
 # Import our app from main.py.
@@ -65,3 +66,32 @@ def test_model_inference_salary_not_over50k():
 
     r = client.post("/classify_salary/", json=ft_data.dict(by_alias=True))
     assert "<=50K" in r.json()
+
+
+LIVE_ENDPOINT = "https://udacity-p3-salary-classifier.onrender.com"
+
+def test__live_model_inference():
+    """Test live model inference where salary is under 50k"""
+    ft_data = FeatureData(
+        age=90,
+        workclass="?",
+        fnlgt=166343,
+        education="1st-4th",
+        education_num=2,
+        marital_status="Widowed",
+        occupation="?",
+        relationship="Not-in-family",
+        race="Black",
+        sex="Female",
+        capital_gain="0",
+        capital_loss=0,
+        hours_per_week=40,
+        native_country="United-States",
+    )
+
+    r = requests.post(f"{LIVE_ENDPOINT}/classify_salary/",
+                      json=ft_data.dict(by_alias=True),
+                      timeout=30)
+    assert "<=50K" in r.json()
+
+    print(f"live inference - status code: {r.status_code}, response json: {r.json()}")

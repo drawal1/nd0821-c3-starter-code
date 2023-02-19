@@ -1,3 +1,4 @@
+import joblib
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
 
@@ -61,3 +62,48 @@ def inference(model, X):
         Predictions from the model.
     """
     return model.predict(X)
+
+def save(model, encoder, lb, folder_path):
+    """save the model, encoder and lb to pkl files in given folder
+
+    Inputs
+    ------
+    model : ???
+        Trained machine learning model.
+    encoder : sklearn.preprocessing._encoders.OneHotEncoder
+        Trained OneHotEncoder if training is True, otherwise returns the encoder passed
+        in.
+    lb : sklearn.preprocessing._label.LabelBinarizer
+        Trained LabelBinarizer if training is True, otherwise returns the binarizer
+        passed in.
+    folder_path: path to folder where the pkl files will be saved
+    Returns
+    -------
+    Nothing
+    """
+    joblib.dump(model, f"{folder_path}/model.pkl")
+    joblib.dump(encoder, f"{folder_path}/encoder.pkl")
+    joblib.dump(lb, f"{folder_path}/lbl_binarizer.pkl")
+
+def load(folder_path):
+    """load the model, encoder and lb from pkl files in given folder and return them
+
+    Inputs
+    ------
+    folder_path: path to folder where the pkl files will be saved
+    Returns
+    -------
+    model : ???
+        Trained machine learning model.
+    encoder : sklearn.preprocessing._encoders.OneHotEncoder
+        Trained OneHotEncoder if training is True, otherwise returns the encoder passed
+        in.
+    lb : sklearn.preprocessing._label.LabelBinarizer
+        Trained LabelBinarizer if training is True, otherwise returns the binarizer
+        passed in.
+    """
+    lrc_model = joblib.load(f"{folder_path}/model.pkl")
+    encoder = joblib.load(f"{folder_path}/encoder.pkl")
+    lb = joblib.load(f"{folder_path}/lbl_binarizer.pkl")
+
+    return (lrc_model, encoder, lb)
