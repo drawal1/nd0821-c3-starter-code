@@ -51,8 +51,25 @@ class FeatureData(BaseModel):  # pylint: disable=too-few-public-methods
 
     class Config:
         """necessary to allow assigning values by field names instead of aliases"""
-
         allow_population_by_field_name = True
+        schema_extra = {
+            "example": {
+                "age": 90,
+                "workclass": "?",
+                "fnlgt": 166343,
+                "education": "1st-4th",
+                "education-num": 2,
+                "marital-status": "Widowed",
+                "occupation": "?",
+                "relationship": "Not-in-family",
+                "race": "Black",
+                "sex": "Female",
+                "capital-gain": "0",
+                "capital-loss": 0,
+                "hours-per-week": 40,
+                "native-country": "United-States"
+            }
+        }
 
 
 @app.post("/classify_salary/")

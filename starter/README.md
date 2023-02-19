@@ -8,9 +8,7 @@ Working in a command line environment is recommended for ease of use with git an
 
 ## Repositories
 
-* Create a directory for the project and initialize Git and DVC.
-   * As you work on the code, continually commit changes. Trained models you want to keep must be committed to DVC.
-* Connect your local Git repository to GitHub.
+* https://github.com/drawal1/nd0821-c3-starter-code
 
 ## Set up S3
 
@@ -26,7 +24,7 @@ To use your new S3 bucket from the AWS CLI you will need to create an IAM user w
 * Give the user a name and select **Programmatic access**.
 * In the permissions selector, search for S3 and give it **AmazonS3FullAccess**
 * Tags are optional and can be skipped.
-* After reviewing your choices, click create user. 
+* After reviewing your choices, click create user.
 * Configure your AWS CLI to use the Access key ID and Secret Access key.
 
 ## GitHub Actions
