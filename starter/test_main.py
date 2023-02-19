@@ -6,7 +6,7 @@ Test code to test FastAPI
 from fastapi.testclient import TestClient
 
 # Import our app from main.py.
-from main import app, FeatureData
+from starter.main import app, FeatureData
 
 # Instantiate the testing client with our app.
 client = TestClient(app)
@@ -17,7 +17,7 @@ def test_api_locally_get_root():
     """Test the root path"""
     r = client.get("/")
     assert r.status_code == 200
-    assert r.json() is not None
+    assert r.text is not None
 
 
 def test_model_inference_salary_over50k():

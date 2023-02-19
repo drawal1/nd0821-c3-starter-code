@@ -16,8 +16,8 @@ from fastapi import (  # type: ignore
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
-from starter.ml.data import process_data
-from starter.ml import model
+from starter.starter.ml.data import process_data
+from starter.starter.ml import model
 
 MODEL_FOLDER_PATH = "./starter/model"
 LR_MODEL_PTH = f"{MODEL_FOLDER_PATH}/model.pkl"
